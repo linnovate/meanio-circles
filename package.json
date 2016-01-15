@@ -1,0 +1,15 @@
+{
+  "name": "circles",
+  "version": "0.1.0",
+  "description": "Circles hierarchy package for MEAN.io",
+  "author": {
+    "name": "Linnovate"
+  },
+  "mean": "0.6.0",
+  "engines": {
+    "node": "4.2.x",
+    "npm": "3.x"
+  },
+  "dependencies": {},
+  "license": "MIT"
+}
