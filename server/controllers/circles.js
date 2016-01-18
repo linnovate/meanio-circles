@@ -5,14 +5,6 @@ module.exports = function(Circles, app) {
 
     return {
 
-        test: function(req, res) {
-            var query = req.acl.query('Article');
-
-            query.find({}, function(err, data) {
-                res.send(data)
-            })
-        },
-
         visualize: function(req, res) {
             Circles.render('index', {}, function(err, html) {
                 res.send(html);

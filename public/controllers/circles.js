@@ -1,12 +1,9 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.circles').controller('CirclesController', ['$scope', 'Global', 'Circles',
-    function($scope, Global, Circles) {
+angular.module('mean.circles').controller('CirclesController', ['$scope', 'Circles',
+    function($scope, Circles) {
         var vm = this;
-
-        vm.global = Global;
-        
 
         vm.availableCircles = [];
         Circles.all(function(acl) {
