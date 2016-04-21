@@ -19,7 +19,6 @@ Circles.register(function(app, auth, database) {
   Circles.controller = require('./server/controllers/circles')(Circles, app);
   Circles.registerCircle = registerCircle;
   Circles.routes(app, auth, database);
-  Circles.aggregateAsset('css', 'circles.css');
   Circles.angularDependencies(['mean.users']);
 
   Circles.menus.add({
