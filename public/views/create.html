@@ -17,8 +17,8 @@
       <label mean-token="'circles'" for="circles" class="col-md-2 control-label">Circles</label>
       <div class="col-md-10">
          <ui-select multiple ng-model="vm.circle.circles">
-            <ui-select-match placeholder="Select circles...">{{$item}}</ui-select-match>
-            <ui-select-choices repeat="circle in vm.availableCircles | filter:$select.search">
+            <ui-select-match class="ui-select-match" placeholder="Select circles...">{{$item}}</ui-select-match>
+            <ui-select-choices class="ui-select-choices" repeat="circle in vm.availableCircles | filter:$select.search">
               {{circle}}
             </ui-select-choices>
           </ui-select>
