@@ -1,3 +1,3 @@
-'use strict';
+'use strict'
 
-require('./assets/css/circles.css');
+require('./assets/css/circles.css')

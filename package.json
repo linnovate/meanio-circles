@@ -17,5 +17,28 @@
   "dependencies": {
     "meanio-users": "^0.1.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^8.0.0"
+  },
+  "standard": {
+    "globals": [
+      "$",
+      "_",
+      "alert",
+      "after",
+      "afterEach",
+      "angular",
+      "before",
+      "beforeEach",
+      "browser",
+      "confirm",
+      "describe",
+      "expect",
+      "it",
+      "jasmine",
+      "localStorage",
+      "XMLHttpRequest"
+    ]
+  }
 }
