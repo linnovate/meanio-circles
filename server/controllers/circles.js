@@ -1,43 +1,45 @@
+'use strict';
+
 var mongoose = require('mongoose'),
-  Circle = mongoose.model('Circle')
+  Circle = mongoose.model('Circle');
 
 module.exports = function (Circles, app) {
   return {
     visualize: function (req, res) {
       Circles.render('index', {}, function (err, html) {
-        res.send(html)
-      })
+        res.send(html);
+      });
     },
 
     tree: function (req, res) {
       Circle.buildPermissions(function (data) {
-        res.send(data.tree)
-      })
+        res.send(data.tree);
+      });
     },
 
     create: function (req, res) {
-      var circle = new Circle(req.body)
+      var circle = new Circle(req.body);
 
       circle.save(function (err) {
         if (err) {
           return res.status(500).json({
             error: 'Cannot save the circle'
-          })
+          });
         }
 
         Circle.buildPermissions(function (data) {
-          app.set('circles', data)
-        })
+          app.set('circles', data);
+        });
 
-        res.json(circle)
-      })
+        res.json(circle);
+      });
     },
 
     update: function (req, res) {
-      if (!req.params.name) return res.send(404, 'No name specified')
+      if (!req.params.name) return res.send(404, 'No name specified');
 
       validateCircles(req.params.name, req.body.circles, function (err, status) {
-        if (err) return res.send(400, status)
+        if (err) return res.send(400, status);
 
         Circle.findOne({
           name: req.params.name
@@ -52,124 +54,124 @@ module.exports = function (Circles, app) {
               upsert: false
             }, function (err, circle) {
               if (err) {
-                return res.send(500, err.message)
+                return res.send(500, err.message);
               }
 
               Circle.buildPermissions(function (data) {
-                app.set('circles', data)
-              })
+                app.set('circles', data);
+              });
 
-              res.send(200, 'updated')
-            })
+              res.send(200, 'updated');
+            });
           }
-        })
-      })
+        });
+      });
     },
     mine: function (req, res) {
-      var descendants = {}
+      var descendants = {};
       for (var index in req.acl.user.circles) {
-        descendants[index] = req.acl.user.circles[index].decendants
+        descendants[index] = req.acl.user.circles[index].decendants;
       }
-      return res.send({allowed: req.acl.user.allowed, descendants: descendants })
+      return res.send({allowed: req.acl.user.allowed, descendants: descendants });
     },
     all: function (req, res) {
       return res.send({
         tree: req.acl.tree,
         circles: req.acl.circles
-      })
+      });
     },
     show: function (req, res) {
-      return res.send('show')
+      return res.send('show');
     },
     loadCircles: function (req, res, next) {
-      var data = app.get('circles')
+      var data = app.get('circles');
 
-      if (!req.acl) req.acl = {}
+      if (!req.acl) req.acl = {};
 
       if (!data) {
         Circle.buildPermissions(function (data) {
-          app.set('circles', data)
-          req.acl.tree = data.tree
-          req.acl.circles = data.circles
+          app.set('circles', data);
+          req.acl.tree = data.tree;
+          req.acl.circles = data.circles;
 
-          next()
-        })
+          next();
+        });
       } else {
-        req.acl.tree = data.tree
-        req.acl.circles = data.circles
-        next()
+        req.acl.tree = data.tree;
+        req.acl.circles = data.circles;
+        next();
       }
     },
     userAcl: function (req, res, next) {
-      var roles = req.user && req.user.roles ? req.user.roles : ['anonymous']
+      var roles = req.user && req.user.roles ? req.user.roles : ['anonymous'];
 
-      var userRoles = {}
-      var list = []
+      var userRoles = {};
+      var list = [];
 
       roles.forEach(function (role) {
         if (req.acl.circles[role]) {
-          if (list.indexOf(role) === -1) list.push(role)
+          if (list.indexOf(role) === -1) list.push(role);
           req.acl.circles[role].decendants.forEach(function (descendent) {
             if (list.indexOf(descendent) === -1) {
-              list.push(descendent)
+              list.push(descendent);
             }
-          })
-          userRoles[role] = req.acl.circles[role]
+          });
+          userRoles[role] = req.acl.circles[role];
         }
-      })
+      });
 
-      var tree = Circle.buildTrees(userRoles)
+      var tree = Circle.buildTrees(userRoles);
 
       for (var index in tree) {
-        tree[index].children = req.acl.tree[index].children
+        tree[index].children = req.acl.tree[index].children;
       }
 
       req.acl.user = {
         tree: tree,
         circles: userRoles,
         allowed: list
-      }
+      };
 
-      return next()
+      return next();
     },
     aclBlocker: function (req, res, next) {
       req.acl.query = function (model) {
         if (!Circles.models[model]) {
-          Circles.models[model] = mongoose.model(model)
+          Circles.models[model] = mongoose.model(model);
         }
         return Circles.models[model].where({
           permissions: {
             $in: req.acl.user.allowed
           }
-        })
-      }
+        });
+      };
 
-      next()
+      next();
     },
     hasCircle: function (circle) {
       return function (req, res, next) {
         if (!req.user || req.acl.user.allowed.indexOf(circle) === -1) {
-          return res.status(403).send('User is not authorized for this action')
+          return res.status(403).send('User is not authorized for this action');
         }
-        next()
-      }
+        next();
+      };
     }
-  }
-}
+  };
+};
 
 function validateCircles (name, circles, callback) {
   Circle.buildPermissions(function (data) {
-    circles = [].concat(circles)
+    circles = [].concat(circles);
 
     circles.forEach(function (parent, index) {
       if (data.circles[name].decendants.indexOf(parent) !== -1) {
-        return callback(true, 'Cannot reference parent in child relationship')
+        return callback(true, 'Cannot reference parent in child relationship');
       }
       if (index === circles.length - 1) {
-        return callback(null, 'valid')
+        return callback(null, 'valid');
       }
-    })
-  })
+    });
+  });
 }
 
 /*
