@@ -1,3 +1,3 @@
 'use strict';
 
-import './assets/css/circles.css';
+require('./assets/css/circles.css');
