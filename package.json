@@ -1,6 +1,6 @@
 {
   "name": "meanio-circles",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Circles hierarchy package for MEAN.io",
   "author": {
     "name": "Linnovate"
@@ -9,36 +9,9 @@
     "type": "git",
     "url": "https://github.com/linnovate/meanio-circles.git"
   },
-  "mean": "0.6.0",
-  "engines": {
-    "node": "4.2.x",
-    "npm": "3.x"
-  },
+  "mean": "0.7.0",
   "dependencies": {
-    "meanio-users": "^0.1.x"
+    "meanio-users": "~0.1.x"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "standard": "^8.0.0"
-  },
-  "standard": {
-    "globals": [
-      "$",
-      "_",
-      "alert",
-      "after",
-      "afterEach",
-      "angular",
-      "before",
-      "beforeEach",
-      "browser",
-      "confirm",
-      "describe",
-      "expect",
-      "it",
-      "jasmine",
-      "localStorage",
-      "XMLHttpRequest"
-    ]
-  }
+  "license": "MIT"
 }
