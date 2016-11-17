@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // Circles service used for circles REST endpoint
 angular.module('mean.circles').factory('Circles', ['$resource',
@@ -19,6 +19,6 @@ angular.module('mean.circles').factory('Circles', ['$resource',
         isArray: false,
         url: '/api/circles/all'
       }
-    })
+    });
   }
-])
+]);

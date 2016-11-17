@@ -1,13 +1,10 @@
-'use strict'
+'use strict';
 
 /*
  * Defining the Package
  */
-var Module = require('meanio').Module
-
-var mongoose = require('mongoose')
-
-var Circles = new Module('circles')
+var Module = require('meanio').Module;
+var Circles = new Module('circles');
 
 /*
  * All MEAN packages require registration
@@ -15,32 +12,32 @@ var Circles = new Module('circles')
  */
 
 Circles.register(function (app, auth, database) {
-  Circles.controller = require('./server/controllers/circles')(Circles, app)
-  Circles.registerCircle = registerCircle
-  Circles.routes(app, auth, database)
-  Circles.angularDependencies(['mean.users'])
+  Circles.controller = require('./server/controllers/circles')(Circles, app);
+  Circles.registerCircle = registerCircle;
+  Circles.routes(app, auth, database);
+  Circles.angularDependencies(['mean.users']);
 
   Circles.menus.add({
     title: 'Circles',
     link: 'manage circles',
     roles: ['authenticated', 'admin'],
     menu: 'main'
-  })
+  });
 
-  Circles.models = {}
+  Circles.models = {};
 
-  return Circles
-})
+  return Circles;
+});
 
 function registerCircle (name, parents) {
-  var Circle = require('mongoose').model('Circle')
+  var Circle = require('mongoose').model('Circle');
 
-  var query = { name: name }
-  var set = {}
+  var query = { name: name };
+  var set = {};
   if (parents) {
     set.$push = {
       circles: { $each : parents }
-    }
+    };
   }
 
   Circle.findOne(query, function (err, data) {
@@ -49,11 +46,11 @@ function registerCircle (name, parents) {
         upsert: true
       }, function (err) {
         if (err) {
-          console.log(err)
+          console.log(err);
         }
-      })
+      });
     }
-  })
+  });
 }
 
 /*
