@@ -30,6 +30,8 @@ angular.module('mean.circles').config(['$stateProvider',
           } else {
             $http.get('/api/circles/mine').then(function(response) {
               aclCallBack(response.data);
+            }).catch(function(error) {
+              $log.warn('error getting user circles via /api/circles/mine', error);
             });
           }
         }
