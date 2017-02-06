@@ -17,7 +17,7 @@ angular.module('mean.circles').config(['$stateProvider',
     });
   }
 ])
-  .run(['$rootScope', '$state', '$http', 'MeanUser', function ($rootScope, $state, $http, MeanUser) {
+  .run(['$rootScope', '$state', '$http', '$log', 'MeanUser', function ($rootScope, $state, $http, $log, MeanUser) {
     $rootScope.$on('$stateChangeStart', function (e, toState) {
       var acl = MeanUser.acl;
       // If the route has a circle requirement on it validate it
